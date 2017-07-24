@@ -12,7 +12,7 @@ class SplashActivity : AppCompatActivity() {
 
     private val LOG_TAG: String = SplashActivity::class.java.simpleName
 
-    val SPLASH_TIMEOUT: Long = 2000
+    val SPLASH_TIMEOUT: Long = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

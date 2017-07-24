@@ -7,25 +7,28 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
-        <activity android:name=".activity.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        android:supportsRtl="true"
+        android:theme="@style/SplashTheme">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.WordsActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:label="@string/app_name" />
+        <activity
+            android:name=".activity.WordEditorActivity"
+            android:parentActivityName=".activity.WordsActivity" />
 
         <provider
+            android:name=".provider.VocabProvider"
             android:authorities="com.android.vocab.VocabProvider"
-            android:name="com.android.vocab.provider.VocabProvider"
             android:exported="false" />
+
+        <activity android:name=".activity.WordDetailActivity"/>
     </application>
 
 </manifest>

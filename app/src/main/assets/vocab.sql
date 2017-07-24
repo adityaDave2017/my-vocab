@@ -1,24 +1,23 @@
-BEGIN TRANSACTION;
-
 CREATE TABLE "tblWordType" (
 	`strTypeName`	TEXT,
 	PRIMARY KEY(`strTypeName`)
 );
 
-INSERT INTO `tblWordType` (strTypeName) VALUES ('VERB'),
- ('ADJECTIVE'),
- ('ADVERB'),
- ('PREPOSITION'),
- ('CONJUNCTION'),
- ('INTERJECTION'),
- ('NOUN'),
- ('PRONOUN');
+INSERT INTO `tblWordType` (strTypeName) VALUES ('Noun'),
+ ('Pronoun'),
+ ('Verb'),
+ ('Adjective'),
+ ('Adverb'),
+ ('Preposition'),
+ ('Conjunction'),
+ ('Interjection');
 
 CREATE TABLE IF NOT EXISTS `tblWord` (
 	`intWordId`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`strWord`	TEXT NOT NULL,
 	`strType`	TEXT NOT NULL,
-	`intFrequency`	INTEGER,
+	`strMeaning`	TEXT NOT NULL,
+	`intFrequency`	INTEGER DEFAULT 0,
 	`tsCreateTime`	DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`tsLastAccess`	DATETIME DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY(`strType`) REFERENCES `tblWordType`(`strTypeName`)
@@ -47,5 +46,3 @@ CREATE TABLE IF NOT EXISTS `tblAntonym` (
     FOREIGN KEY (intMainWordId) REFERENCES tblWord(intWordId),
     FOREIGN KEY (intAntonymWordId) REFERENCES tblWord(intWordId)
 );
-
-COMMIT;

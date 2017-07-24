@@ -7,6 +7,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.util.Log
 
 
 @Suppress("unused")
@@ -101,10 +102,11 @@ class VocabProvider : ContentProvider() {
     override fun update(uri: Uri?, contentValues: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
         val sqliteDatabase: SQLiteDatabase = vocabHelper.writableDatabase
         val rows: Int = when (URI_MATCHER.match(uri)) {
-            WORD_TYPE_ID -> sqliteDatabase.update(VocabContract.WordTypeEntry.TABLE_NAME, contentValues, selection, selectionArgs)
-            WORD_ID -> sqliteDatabase.update(VocabContract.WordEntry.TABLE_NAME, contentValues, selection, selectionArgs)
-            SYNONYM_ID -> sqliteDatabase.update(VocabContract.SynonymEntry.TABLE_NAME, contentValues, selection, selectionArgs)
-            ANTONYM_ID -> sqliteDatabase.update(VocabContract.AntonymEntry.TABLE_NAME, contentValues, selection, selectionArgs)
+//            WORD_TYPE_ID -> sqliteDatabase.update(VocabContract.WordTypeEntry.TABLE_NAME, contentValues, VocabContract.WordTypeEntry._, selectionArgs)
+            WORD_ID -> sqliteDatabase.update(VocabContract.WordEntry.TABLE_NAME, contentValues , "${VocabContract.WordEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
+//            SENTENCE_ID ->
+            SYNONYM_ID -> sqliteDatabase.update(VocabContract.SynonymEntry.TABLE_NAME, contentValues, "${VocabContract.SynonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
+            ANTONYM_ID -> sqliteDatabase.update(VocabContract.AntonymEntry.TABLE_NAME, contentValues, "${VocabContract.AntonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
             else -> throw IllegalArgumentException("Uri not supported: $uri")
         }
         if (rows != 0) {
@@ -117,10 +119,10 @@ class VocabProvider : ContentProvider() {
     override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?): Int {
         val sqliteDatabase: SQLiteDatabase = vocabHelper.writableDatabase
         val rows: Int = when (URI_MATCHER.match(uri)) {
-            WORD_TYPE_ID -> sqliteDatabase.delete(VocabContract.WordTypeEntry.TABLE_NAME, selection, selectionArgs)
-            WORD_ID -> sqliteDatabase.delete(VocabContract.WordEntry.TABLE_NAME, selection, selectionArgs)
-            SYNONYM_ID -> sqliteDatabase.delete(VocabContract.SynonymEntry.TABLE_NAME, selection, selectionArgs)
-            ANTONYM_ID -> sqliteDatabase.delete(VocabContract.AntonymEntry.TABLE_NAME, selection, selectionArgs)
+//            WORD_TYPE_ID -> sqliteDatabase.delete(VocabContract.WordTypeEntry.TABLE_NAME, selection, selectionArgs)
+            WORD_ID -> sqliteDatabase.delete(VocabContract.WordEntry.TABLE_NAME, "${VocabContract.WordEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
+            SYNONYM_ID -> sqliteDatabase.delete(VocabContract.SynonymEntry.TABLE_NAME, "${VocabContract.SynonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
+            ANTONYM_ID -> sqliteDatabase.delete(VocabContract.AntonymEntry.TABLE_NAME, "${VocabContract.AntonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()))
             else -> throw IllegalArgumentException("Uri not supported: $uri")
         }
         if (rows != 0) {

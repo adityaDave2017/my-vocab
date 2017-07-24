@@ -23,7 +23,6 @@ class VocabContract {
         const val PATH_SYNONYM: String = "synonym"
 
         val BASE_URI: Uri = Uri.parse("content://" + CONTENT_AUTHORITY)
-
     }
 
 
@@ -49,6 +48,8 @@ class VocabContract {
         val _ID: String = "intWordId"
 
         val COLUMN_WORD: String = "strWord"
+
+        val COLUMN_MEANING: String = "strMeaning"
 
         val COLUMN_TYPE: String = "strType"
 

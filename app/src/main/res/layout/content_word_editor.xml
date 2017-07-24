@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_word_editor">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_new_word"
+            android:inputType="text|textAutoComplete"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spinnerWordType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@+id/tilWord"
+        app:layout_constraintStart_toStartOf="@+id/tilWord"
+        app:layout_constraintTop_toBottomOf="@+id/tilWord" />
+
+<!--    <Spinner
+        android:id="@+id/spinnerSynonym"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerWordType"
+        app:layout_constraintStart_toStartOf="@+id/spinnerWordType"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerWordType" />
+
+    <Spinner
+        android:id="@+id/spinnerAntonym"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerSynonym"
+        app:layout_constraintStart_toStartOf="@+id/spinnerSynonym"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSynonym" />-->
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/spinnerWordType"
+        android:layout_marginStart="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerWordType"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerWordType"
+        android:id="@+id/tilMeaning">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/meaning"
+            android:inputType="textAutoComplete|textMultiLine" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</android.support.constraint.ConstraintLayout>
