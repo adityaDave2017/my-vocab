@@ -11,4 +11,5 @@ class WordDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word_detail)
     }
+
 }

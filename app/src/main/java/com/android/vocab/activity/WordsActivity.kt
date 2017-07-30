@@ -14,8 +14,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.android.vocab.R
 import com.android.vocab.adapter.WordsAdapter
-import com.android.vocab.bean.Word
-import com.android.vocab.provider.VocabContract
+import com.android.vocab.provider.bean.Word
+import com.android.vocab.provider.getWords
 
 
 @Suppress("unused")
@@ -33,10 +33,11 @@ class WordsActivity : AppCompatActivity(), WordsAdapter.OnWordClicked {
     private lateinit var wordsAdapter: WordsAdapter
     private val wordsList: ArrayList<Word> = ArrayList()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_words)
-        val toolbar = findViewById(R.id.appBar) as Toolbar
+        val toolbar = findViewById(R.id.appBarWords) as Toolbar
         setSupportActionBar(toolbar)
 
         rvWords = findViewById(R.id.rvWords) as RecyclerView
@@ -53,12 +54,13 @@ class WordsActivity : AppCompatActivity(), WordsAdapter.OnWordClicked {
         fab.setOnClickListener { _: View ->
             startActivityForResult(Intent(this@WordsActivity, WordEditorActivity::class.java), Activity.RESULT_OK)
         }
-
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       loadWords()
+        loadWords()
     }
+
 
     override fun wordClicked(word: Word) {
         val intent: Intent = Intent(this@WordsActivity, WordEditorActivity::class.java)
@@ -66,32 +68,17 @@ class WordsActivity : AppCompatActivity(), WordsAdapter.OnWordClicked {
         startActivityForResult(intent, Activity.RESULT_OK)
     }
 
+
     private fun loadWords() {
-        contentResolver.query(
-                VocabContract.WordEntry.CONTENT_URI,
-                arrayOf(VocabContract.WordEntry._ID, VocabContract.WordEntry.COLUMN_WORD, VocabContract.WordEntry.COLUMN_TYPE, VocabContract.WordEntry.COLUMN_MEANING),
-                null,
-                null,
-                null
-        )?.use {
-            cursor ->
-            pbWordsLoading.visibility = View.GONE
-            if (cursor.count == 0) {
-                tvNoWords.visibility = View.VISIBLE
-            } else {
-                wordsList.clear()
-                rvWords.visibility = View.VISIBLE
-                while (cursor.moveToNext()) {
-                    wordsList.add(
-                            Word(wordId = cursor.getInt(cursor.getColumnIndex(VocabContract.WordEntry._ID)),
-                                    word = cursor.getString(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_WORD)),
-                                    wordType = cursor.getString(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_TYPE)),
-                                    meaning = cursor.getString(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_MEANING))
-                            )
-                    )
-                    wordsAdapter.notifyDataSetChanged()
-                }
-            }
+        val retrieved: ArrayList<Word> = getWords(baseContext)
+        pbWordsLoading.visibility = View.GONE
+        if (retrieved.size == 0) {
+            tvNoWords.visibility = View.VISIBLE
+        } else {
+            wordsList.clear()
+            rvWords.visibility = View.VISIBLE
+            wordsList.addAll(retrieved)
+            wordsAdapter.notifyDataSetChanged()
         }
     }
 

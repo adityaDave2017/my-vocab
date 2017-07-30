@@ -10,9 +10,12 @@
     <string name="done">Done</string>
     <string name="confirm_word_inserted">Word Added to Dictionary</string>
     <string name="undo">UNDO</string>
-    <string name="word_not_entered">Please enter a word...</string>
-    <string name="meaning_not_entered">Please enter meaning...</string>
+    <string name="word_not_entered">Please enter a word…</string>
+    <string name="meaning_not_entered">Please enter meaning…</string>
     <string name="confirm_word_delete">Do you really want to delete the word?</string>
     <string name="confirm_word_edit">Do you really want to edit the word?</string>
     <string name="yes">YES</string>
+    <string name="select_type">please select … part of speech</string>
+    <string name="error_word_enter">Please enter a word…</string>
+    <string name="error_meaning_enter">Please enter meaning</string>
 </resources>

@@ -16,6 +16,8 @@ class VocabContract {
 
         const val PATH_WORD: String = "word"
 
+        const val PATH_WORD_AND_TYPE = "word_and_type"
+
         const val PATH_SENTENCE: String = "sentence"
 
         const val PATH_ANTONYM: String = "antonym"
@@ -30,7 +32,11 @@ class VocabContract {
 
         val TABLE_NAME: String = "tblWordType"
 
+        val _ID: String = "intTypeId"
+
         val COLUMN_TYPE_NAME:String = "strTypeName"
+
+        val COLUMN_ABBREVIATION: String = "strAbbr"
 
         val CONTENT_URI: Uri = Uri.withAppendedPath(Contract.BASE_URI, Contract.PATH_WORD_TYPE)
 
@@ -51,19 +57,43 @@ class VocabContract {
 
         val COLUMN_MEANING: String = "strMeaning"
 
-        val COLUMN_TYPE: String = "strType"
+        val COLUMN_TYPE_ID: String = "intTypeId"
 
         val COLUMN_FREQUENCY: String = "intFrequency"
 
         val COLUMN_CREATE_TIME: String = "tsCreateTime"
 
-        val COLUMN_LAST_ACCESS: String = "tsLastAccess"
+        val COLUMN_LAST_ACCESS_TIME: String = "tsLastAccess"
 
         val CONTENT_URI: Uri = Uri.withAppendedPath(Contract.BASE_URI, Contract.PATH_WORD)
 
         val CONTENT_LIST_TYPE: String = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_WORD
 
         val CONTENT_ITEM_TYPE: String = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_WORD
+
+    }
+
+    object WordAndTypeEntry: BaseColumns {
+
+        val COLUMN_WORD: String = "strWord"
+
+        val COLUMN_MEANING: String = "strMeaning"
+
+        val COLUMN_FREQUENCY: String = "intFrequency"
+
+        val COLUMN_CREATE_TIME: String = "tsCreateTime"
+
+        val COLUMN_LAST_ACCESS_TIME: String = "tsLastAccess"
+
+        val COLUMN_TYPE_NAME: String = "strTypeName"
+
+        val COLUMN_ABBR:String = "strAbbr"
+
+        val CONTENT_URI: Uri = Uri.withAppendedPath(Contract.BASE_URI, Contract.PATH_WORD_AND_TYPE)
+
+        val CONTENT_LIST_TYPE: String = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_WORD_AND_TYPE
+
+        val CONTENT_ITEM_TYPE: String = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_WORD_AND_TYPE
 
     }
 
