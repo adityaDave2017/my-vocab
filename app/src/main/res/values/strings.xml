@@ -18,4 +18,12 @@
     <string name="select_type">please select … part of speech</string>
     <string name="error_word_enter">Please enter a word…</string>
     <string name="error_meaning_enter">Please enter meaning</string>
+    <string name="no_change">Nothing to update…</string>
+    <string name="add_sentence">Add Sentence</string>
+    <string name="add_synonym">Add Synonym</string>
+    <string name="add_antonym">Add Antonym</string>
+    <string name="edit">Edit</string>
+    <string name="antonyms">Antonyms</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="sentences">Sentences</string>
 </resources>

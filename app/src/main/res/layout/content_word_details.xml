@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_word_detail">
+
+    <data>
+        <variable
+            name="word"
+            type="com.android.vocab.provider.bean.WordAndType"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="72dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{word.word}"
+                tools:text="Word" />
+
+            <TextView
+                android:id="@+id/tvWordType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/rounded_corner"
+                android:paddingBottom="2dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvWord"
+                app:layout_constraintStart_toEndOf="@+id/tvWord"
+                app:layout_constraintTop_toTopOf="@+id/tvWord"
+                app:layout_constraintVertical_bias="0.63"
+                android:text="@{word.typeAbbr}"
+                tools:text="Type" />
+
+            <TextView
+                android:id="@+id/tvMeaning"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvWord"
+                app:layout_constraintTop_toBottomOf="@+id/tvWord"
+                android:text="@{word.meaning}"
+                tools:text="Meaning" />
+
+            <TextView
+                android:id="@+id/tvSentenceTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvWord"
+                app:layout_constraintTop_toBottomOf="@+id/tvMeaning"
+                android:text="@string/sentences" />
+
+            <LinearLayout
+                android:id="@+id/llSentenceContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/tvSentenceTitle"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/tvSentenceTitle"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvSentenceTitle"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/btnAddSentence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/simple_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/add_sentence"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSynonymTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvWord"
+                app:layout_constraintTop_toBottomOf="@+id/llSentenceContainer"
+                android:text="@string/synonyms" />
+
+            <LinearLayout
+                android:id="@+id/llSynonymContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/tvSynonymTitle"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/tvSynonymTitle"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvSynonymTitle"
+                app:layout_constraintHorizontal_bias="0.25">
+
+                <Button
+                    android:id="@+id/btnAddSynonym"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/simple_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/add_synonym" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvAntonymTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvWord"
+                app:layout_constraintTop_toBottomOf="@+id/llSynonymContainer"
+                android:layout_marginTop="16dp"
+                android:text="@string/antonyms"/>
+
+            <LinearLayout
+                android:id="@+id/llAntonymContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/tvAntonymTitle"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/tvAntonymTitle"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvAntonymTitle"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnAddAntonym"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/simple_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/add_antonym" />
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
+
+</layout>

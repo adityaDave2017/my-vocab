@@ -7,6 +7,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.util.Log
 
 
 @Suppress("unused")
@@ -20,9 +21,9 @@ class VocabProvider : ContentProvider() {
 
         val queryWordsAndType:String = """
             SELECT *
-            FROM ${VocabContract.WordEntry.TABLE_NAME}
-            INNER JOIN ${VocabContract.WordTypeEntry.TABLE_NAME}
-            ON ${VocabContract.WordEntry.COLUMN_TYPE_ID} = ${VocabContract.WordTypeEntry._ID}
+            FROM
+            ${VocabContract.WordEntry.TABLE_NAME} INNER JOIN ${VocabContract.WordTypeEntry.TABLE_NAME}
+            ON ${VocabContract.WordEntry.TABLE_NAME}.${VocabContract.WordEntry.COLUMN_TYPE_ID} = ${VocabContract.WordTypeEntry.TABLE_NAME}.${VocabContract.WordTypeEntry._ID}
         """
 
         val queryWordsAndTypeForId:String = "$queryWordsAndType WHERE ${VocabContract.WordEntry._ID} = ?"

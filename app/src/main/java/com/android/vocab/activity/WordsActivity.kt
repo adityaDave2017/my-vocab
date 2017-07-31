@@ -1,6 +1,5 @@
 package com.android.vocab.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -15,7 +14,8 @@ import android.widget.TextView
 import com.android.vocab.R
 import com.android.vocab.adapter.WordsAdapter
 import com.android.vocab.provider.bean.Word
-import com.android.vocab.provider.getWords
+import com.android.vocab.provider.bean.WordAndType
+import com.android.vocab.provider.getWordsWithType
 
 
 @Suppress("unused")
@@ -23,15 +23,11 @@ class WordsActivity : AppCompatActivity(), WordsAdapter.OnWordClicked {
 
     private val LOG_TAG: String = WordsActivity::class.java.simpleName
 
-    companion object {
-        const val WORD_SENT: String = "WORD_SENT"
-    }
-
     private lateinit var rvWords: RecyclerView
     private lateinit var tvNoWords: TextView
     private lateinit var pbWordsLoading: ProgressBar
     private lateinit var wordsAdapter: WordsAdapter
-    private val wordsList: ArrayList<Word> = ArrayList()
+    private val wordsList: ArrayList<WordAndType> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,30 +48,39 @@ class WordsActivity : AppCompatActivity(), WordsAdapter.OnWordClicked {
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { _: View ->
-            startActivityForResult(Intent(this@WordsActivity, WordEditorActivity::class.java), Activity.RESULT_OK)
+            val intent: Intent = Intent(this@WordsActivity, WordEditorActivity::class.java)
+            intent.putExtra(WordEditorActivity.PARENT_ACTIVITY_CLASS, WordsActivity::class.java.name)
+            startActivityForResult(intent, WordEditorActivity.ADD_REQUEST)
         }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        loadWords()
+        if (resultCode == WordEditorActivity.CHANGE_OCCURRED_RESULT
+                || resultCode == WordDetailActivity.CHANGE_OCCURRED_RESULT) {
+            loadWords()
+        }
     }
 
 
     override fun wordClicked(word: Word) {
-        val intent: Intent = Intent(this@WordsActivity, WordEditorActivity::class.java)
-        intent.putExtra(WORD_SENT, word)
-        startActivityForResult(intent, Activity.RESULT_OK)
+        val intent: Intent = Intent(this@WordsActivity, WordDetailActivity::class.java)
+        intent.putExtra(WordDetailActivity.WORD_TO_SHOW, word)
+        startActivityForResult(intent, WordDetailActivity.SHOW_WORD_REQUEST)
     }
 
 
     private fun loadWords() {
-        val retrieved: ArrayList<Word> = getWords(baseContext)
+        val retrieved: ArrayList<WordAndType> = getWordsWithType(baseContext)
         pbWordsLoading.visibility = View.GONE
         if (retrieved.size == 0) {
+            wordsList.clear()
+            wordsAdapter.notifyDataSetChanged()
+            rvWords.visibility = View.GONE
             tvNoWords.visibility = View.VISIBLE
         } else {
             wordsList.clear()
+            tvNoWords.visibility = View.GONE
             rvWords.visibility = View.VISIBLE
             wordsList.addAll(retrieved)
             wordsAdapter.notifyDataSetChanged()

@@ -22,7 +22,7 @@ class WordType(var typeId: Long = 0L,
     }
 
     override fun toString(): String {
-        return "WordType(typeId=$typeId, typeName='$typeName', abbr='$abbr')"
+        return "WordType(typeId=$typeId, typeName='$typeName', typeAbbr='$abbr')"
     }
 
     companion object CREATOR : Parcelable.Creator<WordType> {

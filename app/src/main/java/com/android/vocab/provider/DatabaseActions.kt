@@ -7,9 +7,12 @@ import android.net.Uri
 import com.android.vocab.provider.bean.Word
 import com.android.vocab.provider.bean.WordAndType
 import com.android.vocab.provider.bean.WordType
+import java.util.*
 
 
 fun insertNewWord(context: Context, word: Word): Uri {
+    word.createTime = GregorianCalendar().timeInMillis
+    word.lastAccessTime = word.createTime
     val contentValues: ContentValues = ContentValues()
     contentValues.put(VocabContract.WordEntry.COLUMN_WORD, word.word)
     contentValues.put(VocabContract.WordEntry.COLUMN_TYPE_ID, word.typeId)

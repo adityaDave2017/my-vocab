@@ -1,26 +1,26 @@
 package com.android.vocab.activity
 
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import com.android.vocab.R
 import com.android.vocab.adapter.TypeListAdapter
 import com.android.vocab.databinding.ActivityWordEditorBinding
 import com.android.vocab.provider.bean.Word
+import com.android.vocab.provider.bean.WordAndType
 import com.android.vocab.provider.bean.WordType
 import com.android.vocab.provider.deleteWord
 import com.android.vocab.provider.getWordTypes
 import com.android.vocab.provider.insertNewWord
 import com.android.vocab.provider.updateWord
 import com.android.vocab.utils.hideSoftKeyboard
-import kotlinx.android.synthetic.main.activity_word_editor.*
 import kotlinx.android.synthetic.main.content_word_editor.*
 
 
@@ -29,20 +29,34 @@ class WordEditorActivity : AppCompatActivity() {
 
     val LOG_TAG: String = WordEditorActivity::class.java.simpleName
 
+    companion object {
+        val ADD_REQUEST:Int = 1
+        val EDIT_REQUEST:Int = 2
+        val NO_CHANGE_RESULT: Int = 3
+        val CHANGE_OCCURRED_RESULT: Int = 4
+        val WORD_TO_EDIT: String = "WORD_TO_EDIT"
+        val PARENT_ACTIVITY_CLASS: String = "PARENT_ACTIVITY"
+    }
 
     private var isEdit: Boolean = false
     private lateinit var binding: ActivityWordEditorBinding
+    private lateinit var prevWord: WordAndType
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (intent.getStringExtra(PARENT_ACTIVITY_CLASS) == null) {
+            throw Exception("Parent Activity must be specified")
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_word_editor)
-        binding.word = if (intent.getParcelableExtra<Word>(WordsActivity.WORD_SENT) != null) {
+        binding.word = if (intent.getParcelableExtra<Word>(WORD_TO_EDIT) != null) {
             isEdit = true
-            intent.getParcelableExtra(WordsActivity.WORD_SENT)
+            prevWord = intent.getParcelableExtra(WORD_TO_EDIT)
+            prevWord.clone()
         } else {
-            Word()
+            WordAndType()
         }
 
         setSupportActionBar(findViewById(R.id.appBarEditWord) as Toolbar)
@@ -53,7 +67,6 @@ class WordEditorActivity : AppCompatActivity() {
         typeList.addAll(getWordTypes(baseContext))
         spinnerWordType.adapter =
                 TypeListAdapter(baseContext, R.layout.support_simple_spinner_dropdown_item, typeList)
-
     }
 
 
@@ -67,47 +80,34 @@ class WordEditorActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.miDelete -> {
                 hideSoftKeyboard(this)
-                val confirmDelete: Snackbar = Snackbar.make(
-                        findViewById(R.id.activity_editor_word_cl),
-                        getString(R.string.confirm_word_delete),
-                        Snackbar.LENGTH_LONG)
-                confirmDelete.setAction(getString(R.string.yes), { deleteWord(baseContext, binding.word!!) })
-                confirmDelete.setActionTextColor(getColor(R.color.colorAccent))
-                confirmDelete.show()
+                deleteWord(baseContext, binding.word)
+                setResult(CHANGE_OCCURRED_RESULT)
+                finish()
                 return true
             }
 
             R.id.miDone -> {
                 hideSoftKeyboard(this)
-                // Update when new item
-                if (!isEdit) {
+                // Update when old item
+                if (isEdit) {
                     if (!isValidInput()) {
                         return true
                     }
-
-                    val uri: Uri? = insertNewWord(baseContext, binding.word!!)
-                    if (uri != null) {
-                        val confirmInsert: Snackbar = Snackbar.make(
-                                findViewById(R.id.activity_editor_word_cl),
-                                getString(R.string.confirm_word_inserted),
-                                Snackbar.LENGTH_LONG)
-                        confirmInsert.setAction(getString(R.string.undo), { deleteWord(baseContext, binding.word!!) })
-                        confirmInsert.setActionTextColor(getColor(R.color.colorAccent))
-                        confirmInsert.show()
+                    if (binding.word != prevWord) {
+                        updateWord(baseContext, binding.word)
+                        setResult(CHANGE_OCCURRED_RESULT)
+                    } else {
+                        Toast.makeText(baseContext, getString(R.string.no_change), Toast.LENGTH_SHORT).show()
                     }
-                    // Add when old item
+                    finish()
+                // Add when new item
                 } else {
                     if (!isValidInput()) {
                         return true
                     }
-
-                    val confirmEdit: Snackbar = Snackbar.make(
-                            findViewById(R.id.activity_editor_word_cl),
-                            getString(R.string.confirm_word_edit),
-                            Snackbar.LENGTH_LONG)
-                    confirmEdit.setAction(getString(R.string.yes), { updateWord(baseContext, binding.word!!) })
-                    confirmEdit.setActionTextColor(getColor(R.color.colorAccent))
-                    confirmEdit.show()
+                    insertNewWord(baseContext, binding.word)
+                    setResult(CHANGE_OCCURRED_RESULT)
+                    finish()
                 }
                 return true
             }
@@ -132,6 +132,12 @@ class WordEditorActivity : AppCompatActivity() {
             Toast.makeText(baseContext, getString(R.string.select_type), Toast.LENGTH_SHORT).show()
         }
         return valid
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
 }

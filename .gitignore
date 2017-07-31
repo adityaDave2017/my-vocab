@@ -47,3 +47,5 @@ libs/
 
 /.gitignore
 /app/src/main/java/com/android/vocab/fortest
+app/src/main/java/com/android/vocab/fragment/
+log/

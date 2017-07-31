@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.android.vocab.R
 import com.android.vocab.provider.bean.Word
+import com.android.vocab.provider.bean.WordAndType
 
 
 @Suppress("unused")
-class WordsAdapter(context: Context, val wordsList: ArrayList<Word>) : RecyclerView.Adapter<WordsAdapter.WordHolder>() {
+class WordsAdapter(context: Context, val wordsList: ArrayList<WordAndType>) : RecyclerView.Adapter<WordsAdapter.WordHolder>() {
 
     private val LOG_TAG: String = WordsAdapter::class.java.simpleName
 
@@ -28,7 +29,7 @@ class WordsAdapter(context: Context, val wordsList: ArrayList<Word>) : RecyclerV
 
     override fun onBindViewHolder(holder: WordHolder?, position: Int) {
         holder?.tvWord?.text = wordsList[position].word
-        holder?.tvWordType?.text = wordsList[position].typeId.toString()
+        holder?.tvWordType?.text = wordsList[position].typeAbbr
         holder?.tvMeaning?.text = wordsList[position].meaning
         holder?.clContainer?.setOnClickListener({ wordClicked.wordClicked(wordsList[position]) })
     }
