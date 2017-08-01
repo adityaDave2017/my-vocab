@@ -26,4 +26,7 @@
     <string name="antonyms">Antonyms</string>
     <string name="synonyms">Synonyms</string>
     <string name="sentences">Sentences</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_sentence">enter sentence…</string>
 </resources>

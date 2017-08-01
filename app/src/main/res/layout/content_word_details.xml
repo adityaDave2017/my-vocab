@@ -10,7 +10,7 @@
             type="com.android.vocab.provider.bean.WordAndType"/>
     </data>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -76,29 +76,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvMeaning"
                 android:text="@string/sentences" />
 
-            <LinearLayout
-                android:id="@+id/llSentenceContainer"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvSentenceContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="185dp"
                 app:layout_constraintStart_toStartOf="@+id/tvSentenceTitle"
                 android:layout_marginStart="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/tvSentenceTitle"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvSentenceTitle"
-                android:layout_marginTop="16dp">
-
-                <Button
-                    android:id="@+id/btnAddSentence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/simple_button"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textColor="@color/colorAccent"
-                    android:text="@string/add_sentence"/>
-            </LinearLayout>
+                android:layout_marginTop="16dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:layout= "@layout/text_view_for_display"/>
 
             <TextView
                 android:id="@+id/tvSynonymTitle"
@@ -109,33 +98,22 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvWord"
-                app:layout_constraintTop_toBottomOf="@+id/llSentenceContainer"
+                app:layout_constraintTop_toBottomOf="@+id/rvSentenceContainer"
                 android:text="@string/synonyms" />
 
-            <LinearLayout
-                android:id="@+id/llSynonymContainer"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvSynonymContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="185dp"
                 app:layout_constraintStart_toStartOf="@+id/tvSynonymTitle"
                 android:layout_marginStart="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/tvSynonymTitle"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvSynonymTitle"
-                app:layout_constraintHorizontal_bias="0.25">
-
-                <Button
-                    android:id="@+id/btnAddSynonym"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/simple_button"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textColor="@color/colorAccent"
-                    android:text="@string/add_synonym" />
-            </LinearLayout>
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:layout= "@layout/text_view_for_display"/>
 
             <TextView
                 android:id="@+id/tvAntonymTitle"
@@ -144,15 +122,14 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvWord"
-                app:layout_constraintTop_toBottomOf="@+id/llSynonymContainer"
+                app:layout_constraintTop_toBottomOf="@+id/rvSynonymContainer"
                 android:layout_marginTop="16dp"
                 android:text="@string/antonyms"/>
 
-            <LinearLayout
-                android:id="@+id/llAntonymContainer"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvAntonymContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="185dp"
                 app:layout_constraintStart_toStartOf="@+id/tvAntonymTitle"
                 android:layout_marginStart="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/tvAntonymTitle"
@@ -160,23 +137,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvAntonymTitle"
                 android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp">
-
-                <Button
-                    android:id="@+id/btnAddAntonym"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/simple_button"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textColor="@color/colorAccent"
-                    android:text="@string/add_antonym" />
-            </LinearLayout>
+                android:layout_marginBottom="8dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:layout= "@layout/text_view_for_display"/>
 
         </android.support.constraint.ConstraintLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </layout>

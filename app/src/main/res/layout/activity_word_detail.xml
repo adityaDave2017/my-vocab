@@ -28,7 +28,9 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_word_details"
+        <include
+            android:id="@+id/detailContent"
+            layout="@layout/content_word_details"
             app:word = "@{word}"/>
 
     </android.support.constraint.ConstraintLayout>

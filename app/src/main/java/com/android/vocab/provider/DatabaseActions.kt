@@ -1,13 +1,14 @@
+@file:Suppress("unused")
+
 package com.android.vocab.provider
 
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
-import com.android.vocab.provider.bean.Word
-import com.android.vocab.provider.bean.WordAndType
-import com.android.vocab.provider.bean.WordType
+import com.android.vocab.provider.bean.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun insertNewWord(context: Context, word: Word): Uri {
@@ -135,6 +136,112 @@ fun getWordTypes(context: Context, id:Long = 0L): ArrayList<WordType> {
                             cursor.getLong(cursor.getColumnIndex(VocabContract.WordTypeEntry._ID)),
                             cursor.getString(cursor.getColumnIndex(VocabContract.WordTypeEntry.COLUMN_TYPE_NAME)),
                             cursor.getString(cursor.getColumnIndex(VocabContract.WordTypeEntry.COLUMN_ABBREVIATION))
+                    )
+            )
+        }
+    }
+    return list
+}
+
+
+fun insertSentence(context: Context, sentence: Sentence): Uri {
+    val contentValues: ContentValues = ContentValues()
+    contentValues.put(VocabContract.SentenceEntry.COLUMN_WORD_ID, sentence.wordId)
+    contentValues.put(VocabContract.SentenceEntry.COLUMN_SENTENCE, sentence.sentence)
+    contentValues.put(VocabContract.SentenceEntry.COLUMN_CREATE_TIME, GregorianCalendar().timeInMillis)
+    return context.contentResolver.insert(VocabContract.SentenceEntry.CONTENT_URI, contentValues)
+}
+
+
+fun getSentences(context: Context, wordId: Long): ArrayList<Sentence> {
+    val list: ArrayList<Sentence> = ArrayList()
+    context.contentResolver.query(
+            VocabContract.SentenceEntry.CONTENT_URI,
+            null,
+            "${VocabContract.SentenceEntry.COLUMN_WORD_ID} = ?",
+            arrayOf(wordId.toString()),
+            null
+    ).use {
+        cursor ->
+        while (cursor.moveToNext()) {
+            list.add(
+                    Sentence(
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SentenceEntry._ID)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SentenceEntry.COLUMN_WORD_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.SentenceEntry.COLUMN_SENTENCE)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SentenceEntry.COLUMN_CREATE_TIME))
+                    )
+            )
+        }
+    }
+    return list
+}
+
+
+fun insertSynonym(context: Context, synonym: Synonym): Uri {
+    val contentValues: ContentValues = ContentValues()
+    contentValues.put(VocabContract.SynonymEntry.COLUMN_MAIN_WORD_ID, synonym.mainWordId)
+    contentValues.put(VocabContract.SynonymEntry.COLUMN_SYNONYM_WORD_ID, synonym.synonymWordId)
+    return context.contentResolver.insert(VocabContract.SynonymEntry.CONTENT_URI, contentValues)
+}
+
+
+fun getSynonyms(context: Context, id:Long = 0L): ArrayList<Synonym> {
+    val list: ArrayList<Synonym> = ArrayList()
+    context.contentResolver.query(
+            if(id == 0L) {
+                VocabContract.SynonymEntry.CONTENT_URI
+            } else {
+                ContentUris.withAppendedId(VocabContract.SynonymEntry.CONTENT_URI, id)
+            },
+            null,
+            null,
+            null,
+            null
+    ).use {
+        cursor ->
+        while (cursor.moveToNext()) {
+            list.add(
+                    Synonym(
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry._ID)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry.COLUMN_MAIN_WORD_ID)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry.COLUMN_SYNONYM_WORD_ID))
+                    )
+            )
+        }
+    }
+    return list
+}
+
+
+fun insertAntonym(context: Context, antonym: Antonym): Uri {
+    val contentValues: ContentValues = ContentValues()
+    contentValues.put(VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID, antonym.mainWordId)
+    contentValues.put(VocabContract.AntonymEntry.COLUMN_ANTONYM_WORD_ID, antonym.antonymWordId)
+    return context.contentResolver.insert(VocabContract.SynonymEntry.CONTENT_URI, contentValues)
+}
+
+
+fun getAntonyms(context: Context, id:Long = 0L): ArrayList<Antonym> {
+    val list: ArrayList<Antonym> = ArrayList()
+    context.contentResolver.query(
+            if(id == 0L) {
+                VocabContract.AntonymEntry.CONTENT_URI
+            } else {
+                ContentUris.withAppendedId(VocabContract.AntonymEntry.CONTENT_URI, id)
+            },
+            null,
+            null,
+            null,
+            null
+    ).use {
+        cursor ->
+        while (cursor.moveToNext()) {
+            list.add(
+                    Antonym(
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry._ID)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry.COLUMN_ANTONYM_WORD_ID))
                     )
             )
         }
