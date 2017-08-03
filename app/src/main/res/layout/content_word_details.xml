@@ -23,11 +23,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="72dp"
+                android:text="@{word.word}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textSize="30sp"
+                android:textSize="36sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{word.word}"
                 tools:text="Word" />
 
             <TextView
@@ -56,12 +56,13 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:text="@{word.meaning}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/primaryText"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvWord"
                 app:layout_constraintTop_toBottomOf="@+id/tvWord"
-                android:text="@{word.meaning}"
                 tools:text="Meaning" />
 
             <TextView
@@ -79,15 +80,15 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvSentenceContainer"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
-                app:layout_constraintStart_toStartOf="@+id/tvSentenceTitle"
-                android:layout_marginStart="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/tvSentenceTitle"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvSentenceTitle"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:layout= "@layout/text_view_for_display"/>
+                app:layout_constraintEnd_toEndOf="@+id/tvSentenceTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvSentenceTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvSentenceTitle"
+                tools:listitem="@layout/text_view_for_display" />
 
             <TextView
                 android:id="@+id/tvSynonymTitle"
@@ -104,16 +105,16 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvSynonymContainer"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
-                app:layout_constraintStart_toStartOf="@+id/tvSynonymTitle"
-                android:layout_marginStart="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/tvSynonymTitle"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvSynonymTitle"
-                app:layout_constraintHorizontal_bias="0.25"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:layout= "@layout/text_view_for_display"/>
+                app:layout_constraintEnd_toEndOf="@+id/tvSynonymTitle"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toStartOf="@+id/tvSynonymTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvSynonymTitle"
+                tools:listitem="@layout/text_view_for_display" />
 
             <TextView
                 android:id="@+id/tvAntonymTitle"
@@ -129,17 +130,17 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvAntonymContainer"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
-                app:layout_constraintStart_toStartOf="@+id/tvAntonymTitle"
-                android:layout_marginStart="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/tvAntonymTitle"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvAntonymTitle"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:layout= "@layout/text_view_for_display"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tvAntonymTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvAntonymTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvAntonymTitle"
+                tools:listitem="@layout/text_view_for_display" />
 
         </android.support.constraint.ConstraintLayout>
 

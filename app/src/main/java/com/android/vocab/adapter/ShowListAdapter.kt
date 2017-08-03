@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import com.android.vocab.R
 import com.android.vocab.holder.AddButtonHolder
 import com.android.vocab.holder.TextShowHolder
-import com.android.vocab.provider.bean.Antonym
-import com.android.vocab.provider.bean.Sentence
-import com.android.vocab.provider.bean.Synonym
+import com.android.vocab.provider.bean.*
 
 
 @Suppress("unused")
@@ -46,8 +44,8 @@ class ShowListAdapter(val context:Context, val type: SupportedTypes, val list: L
         if (holder is TextShowHolder) {
             holder.textView.text = when(type) {
                 SupportedTypes.SENTENCE_TYPE -> (list[position] as Sentence).sentence
-                SupportedTypes.SYNONYM_TYPE -> (list[position] as Synonym).synonymId.toString()
-                SupportedTypes.ANTONYM_TYPE -> (list[position] as Antonym).antonymWordId.toString()
+                SupportedTypes.SYNONYM_TYPE -> (list[position] as SynonymWord).word
+                SupportedTypes.ANTONYM_TYPE -> (list[position] as AntonymWord).word
             }
         }
     }

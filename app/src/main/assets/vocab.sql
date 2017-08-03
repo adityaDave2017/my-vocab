@@ -31,6 +31,6 @@ CREATE TABLE "tblSentence" (
 	`tsCreateTime`	TEXT DEFAULT 'strftime("%s", "now")',
 	FOREIGN KEY(`intWordId`) REFERENCES `tblWord`(`intWordId`)
 );
-CREATE TABLE `tblAntonym` ( `intAnotnymId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `intMainWordId` INTEGER NOT NULL, `intAntonymWordId` INTEGER NOT NULL ,
+CREATE TABLE `tblAntonym` ( `intAntonymId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `intMainWordId` INTEGER NOT NULL, `intAntonymWordId` INTEGER NOT NULL ,
 FOREIGN KEY (intMainWordId) REFERENCES tblWord(intWordId),FOREIGN KEY (intAntonymWordId) REFERENCES tblWord(intWordId));
 COMMIT;

@@ -33,7 +33,7 @@ class InputDialog: DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog.setCanceledOnTouchOutside(false)
-        val view: View = View.inflate(context, R.layout.dialog_input, container)
+        val view: View = View.inflate(context, R.layout.dialog_input_text, container)
         val etInput: EditText = (view.findViewById(R.id.tilInputText) as TextInputLayout).editText!!
         val btnConfirm: Button = view.findViewById(R.id.btnConfirm) as Button
         btnConfirm.setOnClickListener {

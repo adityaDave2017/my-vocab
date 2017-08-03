@@ -54,7 +54,7 @@ class WordEditorActivity : AppCompatActivity() {
         binding.word = if (intent.getParcelableExtra<Word>(WORD_TO_EDIT) != null) {
             isEdit = true
             prevWord = intent.getParcelableExtra(WORD_TO_EDIT)
-            prevWord.clone()
+            prevWord.makeClone()
         } else {
             WordAndType()
         }

@@ -24,6 +24,10 @@ class VocabContract {
 
         const val PATH_SYNONYM: String = "synonym"
 
+        const val PATH_SYNONYM_FOR_WORD: String = "synonym_for_word"
+
+        const val PATH_ANTONYM_FOR_WORD: String = "antonym_for_word"
+
         val BASE_URI: Uri = Uri.parse("content://" + CONTENT_AUTHORITY)
     }
 
@@ -75,6 +79,8 @@ class VocabContract {
 
     object WordAndTypeEntry: BaseColumns {
 
+        val COLUMN_WORD_ID: String = "intWordId"
+
         val COLUMN_WORD: String = "strWord"
 
         val COLUMN_MEANING: String = "strMeaning"
@@ -84,6 +90,8 @@ class VocabContract {
         val COLUMN_CREATE_TIME: String = "tsCreateTime"
 
         val COLUMN_LAST_ACCESS_TIME: String = "tsLastAccess"
+
+        val COLUMN_TYPE_ID: String = "intTypeId"
 
         val COLUMN_TYPE_NAME: String = "strTypeName"
 
@@ -152,6 +160,68 @@ class VocabContract {
         val CONTENT_LIST_TYPE: String = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_ANTONYM
 
         val CONTENT_ITEM_TYPE: String = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_ANTONYM
+
+    }
+
+
+    object SynonymWordEntry: BaseColumns {
+
+        val WORD_ID: String = "intWordId"
+
+        val COLUMN_WORD: String = "strWord"
+
+        val COLUMN_MEANING: String = "strMeaning"
+
+        val COLUMN_TYPE_ID: String = "intTypeId"
+
+        val COLUMN_FREQUENCY: String = "intFrequency"
+
+        val COLUMN_CREATE_TIME: String = "tsCreateTime"
+
+        val COLUMN_LAST_ACCESS_TIME: String = "tsLastAccess"
+
+        val SYNONYM_ID: String = "intSynonymId"
+
+        val COLUMN_MAIN_WORD_ID: String = "intMainWordId"
+
+        val COLUMN_SYNONYM_WORD_ID: String = "intSynonymWordId"
+
+        val CONTENT_URI: Uri = Uri.withAppendedPath(Contract.BASE_URI, Contract.PATH_SYNONYM_FOR_WORD)
+
+        val CONTENT_LIST_TYPE: String = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_SYNONYM_FOR_WORD
+
+        val CONTENT_ITEM_TYPE: String = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_SYNONYM_FOR_WORD
+
+    }
+
+
+    object AntonymWordEntry: BaseColumns {
+
+        val WORD_ID: String = "intWordId"
+
+        val COLUMN_WORD: String = "strWord"
+
+        val COLUMN_MEANING: String = "strMeaning"
+
+        val COLUMN_TYPE_ID: String = "intTypeId"
+
+        val COLUMN_FREQUENCY: String = "intFrequency"
+
+        val COLUMN_CREATE_TIME: String = "tsCreateTime"
+
+        val COLUMN_LAST_ACCESS_TIME: String = "tsLastAccess"
+
+        val ANTONYM_ID: String = "intAntonymId"
+
+        val COLUMN_MAIN_WORD_ID: String = "intMainWordId"
+
+        val COLUMN_ANTONYM_WORD_ID: String = "intAntonymWordId"
+
+        val CONTENT_URI: Uri = Uri.withAppendedPath(Contract.BASE_URI, Contract.PATH_ANTONYM_FOR_WORD)
+
+        val CONTENT_LIST_TYPE: String = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_ANTONYM_FOR_WORD
+
+        val CONTENT_ITEM_TYPE: String = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + Contract.PATH_ANTONYM_FOR_WORD
 
     }
 

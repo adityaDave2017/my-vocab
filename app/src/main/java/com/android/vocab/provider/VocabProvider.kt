@@ -28,6 +28,22 @@ class VocabProvider : ContentProvider() {
 
         val queryWordsAndTypeForId:String = "$queryWordsAndType WHERE ${VocabContract.WordEntry._ID} = ?"
 
+        val queryForSynonymsWord: String = """
+            SELECT *
+            FROM
+            ${VocabContract.SynonymEntry.TABLE_NAME} INNER JOIN ${VocabContract.WordEntry.TABLE_NAME}
+            ON ${VocabContract.SynonymEntry.TABLE_NAME}.${VocabContract.SynonymEntry.COLUMN_SYNONYM_WORD_ID} = ${VocabContract.WordEntry.TABLE_NAME}.${VocabContract.WordEntry._ID}
+            WHERE ${VocabContract.SynonymEntry.TABLE_NAME}.${VocabContract.SynonymEntry.COLUMN_MAIN_WORD_ID} = ?
+        """
+
+        val queryForAntonymsWord: String = """
+            SELECT *
+            FROM
+            ${VocabContract.AntonymEntry.TABLE_NAME} INNER JOIN ${VocabContract.WordEntry.TABLE_NAME}
+            ON ${VocabContract.AntonymEntry.TABLE_NAME}.${VocabContract.AntonymEntry.COLUMN_ANTONYM_WORD_ID} = ${VocabContract.WordEntry.TABLE_NAME}.${VocabContract.WordEntry._ID}
+            WHERE ${VocabContract.AntonymEntry.TABLE_NAME}.${VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID} = ?
+        """
+
         val URI_MATCHER: UriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
         val WORD_TYPE_LIST: Int = 100
@@ -54,6 +70,10 @@ class VocabProvider : ContentProvider() {
 
         val WORD_AND_TYPE_ITEM: Int = 601
 
+        val SYNONYM_FOR_WORD_LIST: Int = 700
+
+        val ANTONYM_FOR_WORD_LIST: Int = 701
+
         init {
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_WORD_TYPE, WORD_TYPE_LIST)
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_WORD_TYPE}/#", WORD_TYPE_ITEM)
@@ -64,8 +84,8 @@ class VocabProvider : ContentProvider() {
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_SENTENCE, SENTENCE_LIST)
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_SENTENCE}/#", SENTENCE_ITEM)
 
-            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_ANTONYM, SYNONYM_LIST)
-            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_ANTONYM}/#", SYNONYM_ITEM)
+            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_SYNONYM, SYNONYM_LIST)
+            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_SYNONYM}/#", SYNONYM_ITEM)
 
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_ANTONYM, ANTONYM_LIST)
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_ANTONYM}/#", ANTONYM_ITEM)
@@ -73,6 +93,9 @@ class VocabProvider : ContentProvider() {
             /* Custom Query Registration */
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, VocabContract.PATH_WORD_AND_TYPE, WORD_AND_TYPE_LIST)
             URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_WORD_AND_TYPE}/#", WORD_AND_TYPE_ITEM)
+
+            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_SYNONYM_FOR_WORD}/#", SYNONYM_FOR_WORD_LIST)
+            URI_MATCHER.addURI(VocabContract.CONTENT_AUTHORITY, "${VocabContract.PATH_ANTONYM_FOR_WORD}/#", ANTONYM_FOR_WORD_LIST)
         }
 
     }
@@ -101,10 +124,12 @@ class VocabProvider : ContentProvider() {
             WORD_ITEM -> sqliteDatabase.query(VocabContract.WordEntry.TABLE_NAME, projection, "${VocabContract.WordEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
             SENTENCE_LIST -> sqliteDatabase.query(VocabContract.SentenceEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder)
             SENTENCE_ITEM -> sqliteDatabase.query(VocabContract.SentenceEntry.TABLE_NAME, projection, "${VocabContract.SentenceEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
-            SYNONYM_ITEM -> sqliteDatabase.query(VocabContract.SynonymEntry.TABLE_NAME, projection, "${VocabContract.SynonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
-            ANTONYM_ITEM -> sqliteDatabase.query(VocabContract.AntonymEntry.TABLE_NAME, projection, "${VocabContract.AntonymEntry._ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
+            SYNONYM_ITEM -> sqliteDatabase.query(VocabContract.SynonymEntry.TABLE_NAME, projection, "${VocabContract.SynonymEntry.COLUMN_MAIN_WORD_ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
+            ANTONYM_ITEM -> sqliteDatabase.query(VocabContract.AntonymEntry.TABLE_NAME, projection, "${VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID}=?", arrayOf(ContentUris.parseId(uri).toString()), null, null, sortOrder)
             WORD_AND_TYPE_LIST -> sqliteDatabase.rawQuery(queryWordsAndType, null)
-            WORD_AND_TYPE_ITEM -> sqliteDatabase.rawQuery(queryWordsAndTypeForId, selectionArgs)
+            WORD_AND_TYPE_ITEM -> sqliteDatabase.rawQuery(queryWordsAndTypeForId, arrayOf(ContentUris.parseId(uri).toString()))
+            SYNONYM_FOR_WORD_LIST -> sqliteDatabase.rawQuery(queryForSynonymsWord, arrayOf(ContentUris.parseId(uri).toString()))
+            ANTONYM_FOR_WORD_LIST -> sqliteDatabase.rawQuery(queryForAntonymsWord, arrayOf(ContentUris.parseId(uri).toString()))
             else -> throw IllegalArgumentException("Cannot query unknown uri: $uri")
         }
         cursor.setNotificationUri(context?.contentResolver, uri)
@@ -161,6 +186,7 @@ class VocabProvider : ContentProvider() {
             SENTENCE_ITEM -> VocabContract.SentenceEntry.CONTENT_ITEM_TYPE
             SYNONYM_ITEM -> VocabContract.SynonymEntry.CONTENT_LIST_TYPE
             ANTONYM_ITEM -> VocabContract.AntonymEntry.CONTENT_LIST_TYPE
+            // Todo: Custom items left
             else -> throw IllegalArgumentException("No type for uri: $uri")
         }
     }

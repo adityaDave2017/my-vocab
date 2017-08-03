@@ -4,15 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-class WordAndType(nwordId: Long = 0,
-                  nword: String = "",
-                  ntypeId: Long = 0L,
-                  nmeaning: String = "",
-                  nfrequency: Int = 0,
-                  ncreateTime: Long = 0L,
-                  nlastAccessTime: Long = 0L,
+class WordAndType(wordId: Long = 0,
+                  word: String = "",
+                  typeId: Long = 0L,
+                  meaning: String = "",
+                  frequency: Int = 0,
+                  createTime: Long = 0L,
+                  lastAccessTime: Long = 0L,
                   val typeName: String = "",
-                  val typeAbbr: String = "") : Word(nwordId, nword, ntypeId, nmeaning, nfrequency, ncreateTime, nlastAccessTime), Cloneable {
+                  val typeAbbr: String = "") : Word(wordId, word, typeId, meaning, frequency, createTime, lastAccessTime), Cloneable {
 
     constructor(parcel: Parcel) : this(
             parcel.readLong(),
@@ -47,20 +47,8 @@ class WordAndType(nwordId: Long = 0,
         return false
     }
 
-    override fun hashCode(): Int {
-        var result = wordId.hashCode()
-        result = 31 * result + word.hashCode()
-        result = 31 * result + typeId.hashCode()
-        result = 31 * result + meaning.hashCode()
-        result = 31 * result + frequency
-        result = 31 * result + createTime.hashCode()
-        result = 31 * result + lastAccessTime.hashCode()
-        result = 31 * result + typeName.hashCode()
-        result = 31 * result + typeAbbr.hashCode()
-        return result
-    }
 
-    public override fun clone(): WordAndType {
+    override fun clone(): WordAndType {
         return WordAndType(
                 this.wordId,
                 this.word,
@@ -73,6 +61,26 @@ class WordAndType(nwordId: Long = 0,
                 this.typeAbbr
         )
     }
+
+
+    override fun hashCode(): Int {
+        var result = typeName.hashCode()
+        result = 31 * result + typeAbbr.hashCode()
+        return result
+    }
+
+    fun makeClone(): WordAndType = WordAndType(
+            this.wordId,
+            this.word,
+            this.typeId,
+            this.meaning,
+            this.frequency,
+            this.createTime,
+            this.lastAccessTime,
+            this.typeName,
+            this.typeAbbr
+    )
+
 
     companion object CREATOR : Parcelable.Creator<Word> {
         override fun createFromParcel(parcel: Parcel): Word {

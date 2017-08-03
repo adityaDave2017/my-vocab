@@ -6,6 +6,7 @@ import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.android.vocab.provider.bean.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -98,13 +99,13 @@ fun getWordsWithType(context: Context, id: Long = 0L): ArrayList<WordAndType> {
         while (cursor.moveToNext()) {
             list.add(
                     WordAndType(
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordEntry._ID)),
-                            cursor.getString(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_WORD)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_TYPE_ID)),
-                            cursor.getString(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_MEANING)),
-                            cursor.getInt(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_FREQUENCY)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_CREATE_TIME)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordEntry.COLUMN_LAST_ACCESS_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_WORD_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_WORD)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_TYPE_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_MEANING)),
+                            cursor.getInt(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_FREQUENCY)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_CREATE_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_LAST_ACCESS_TIME)),
                             cursor.getString(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_TYPE_NAME)),
                             cursor.getString(cursor.getColumnIndex(VocabContract.WordAndTypeEntry.COLUMN_ABBR))
                     )
@@ -186,14 +187,10 @@ fun insertSynonym(context: Context, synonym: Synonym): Uri {
 }
 
 
-fun getSynonyms(context: Context, id:Long = 0L): ArrayList<Synonym> {
-    val list: ArrayList<Synonym> = ArrayList()
+fun getSynonyms(context: Context, id:Long): ArrayList<SynonymWord> {
+    val list: ArrayList<SynonymWord> = ArrayList()
     context.contentResolver.query(
-            if(id == 0L) {
-                VocabContract.SynonymEntry.CONTENT_URI
-            } else {
-                ContentUris.withAppendedId(VocabContract.SynonymEntry.CONTENT_URI, id)
-            },
+            ContentUris.withAppendedId(VocabContract.SynonymWordEntry.CONTENT_URI, id),
             null,
             null,
             null,
@@ -202,10 +199,15 @@ fun getSynonyms(context: Context, id:Long = 0L): ArrayList<Synonym> {
         cursor ->
         while (cursor.moveToNext()) {
             list.add(
-                    Synonym(
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry._ID)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry.COLUMN_MAIN_WORD_ID)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymEntry.COLUMN_SYNONYM_WORD_ID))
+                    SynonymWord(
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymWordEntry.WORD_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_WORD)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_TYPE_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_MEANING)),
+                            cursor.getInt(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_FREQUENCY)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_CREATE_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymWordEntry.COLUMN_LAST_ACCESS_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.SynonymWordEntry.SYNONYM_ID))
                     )
             )
         }
@@ -218,18 +220,14 @@ fun insertAntonym(context: Context, antonym: Antonym): Uri {
     val contentValues: ContentValues = ContentValues()
     contentValues.put(VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID, antonym.mainWordId)
     contentValues.put(VocabContract.AntonymEntry.COLUMN_ANTONYM_WORD_ID, antonym.antonymWordId)
-    return context.contentResolver.insert(VocabContract.SynonymEntry.CONTENT_URI, contentValues)
+    return context.contentResolver.insert(VocabContract.AntonymEntry.CONTENT_URI, contentValues)
 }
 
 
-fun getAntonyms(context: Context, id:Long = 0L): ArrayList<Antonym> {
-    val list: ArrayList<Antonym> = ArrayList()
+fun getAntonyms(context: Context, id:Long): ArrayList<AntonymWord> {
+    val list: ArrayList<AntonymWord> = ArrayList()
     context.contentResolver.query(
-            if(id == 0L) {
-                VocabContract.AntonymEntry.CONTENT_URI
-            } else {
-                ContentUris.withAppendedId(VocabContract.AntonymEntry.CONTENT_URI, id)
-            },
+            ContentUris.withAppendedId(VocabContract.AntonymWordEntry.CONTENT_URI, id),
             null,
             null,
             null,
@@ -238,10 +236,15 @@ fun getAntonyms(context: Context, id:Long = 0L): ArrayList<Antonym> {
         cursor ->
         while (cursor.moveToNext()) {
             list.add(
-                    Antonym(
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry._ID)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry.COLUMN_MAIN_WORD_ID)),
-                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymEntry.COLUMN_ANTONYM_WORD_ID))
+                    AntonymWord(
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymWordEntry.WORD_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_WORD)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_TYPE_ID)),
+                            cursor.getString(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_MEANING)),
+                            cursor.getInt(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_FREQUENCY)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_CREATE_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymWordEntry.COLUMN_LAST_ACCESS_TIME)),
+                            cursor.getLong(cursor.getColumnIndex(VocabContract.AntonymWordEntry.ANTONYM_ID))
                     )
             )
         }
